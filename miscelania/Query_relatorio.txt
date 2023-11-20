@@ -1,0 +1,22 @@
+	select ctt.ctt_custo ctt_custo,ctt.ctt_desc01 ctt_desc01, ct2_itemd ctd_item, ctd_desc01 , ct2d.ct2_filial ct2_filial, ct2d.ct2_data ct2_data, ct2d.ct2_hist  ct2_hist, 
+	ct1.ct1_conta ct1_conta, ct1_desc01, 'd' tipo, ct2d.ct2_valor ct2_valor 
+	from CTT010 ctt 
+	inner join CT2010 ct2d on ctt.ctt_filial = ct2d.ct2_filial and (ct2_data between '20230601' and '20230620') and (ct2_debito between ' ' and 'ZZZZZZ') and (ct2_itemd between ' ' and 'ZZZZ') and ctt_custo = ct2_ccd and ct2d.d_e_l_e_t_ = ' ' 
+	and ct2d.ct2_lote not in (008810)
+
+	inner join CT1010 ct1  on ctt.ctt_filial = ct1.ct1_filial  and ct1_conta = ct2_debito and ct1.d_e_l_E_t_ = ' ' 
+	inner join CTD010 ctd  on ctt.ctt_filial = ctd.ctd_filial  and ctd_item = ct2_itemd and ctd.d_e_l_E_t_ = ' ' 
+	where ctt_custo between '000' and 'ZZZZ' 
+	and ctt.d_e_l_E_t_ = ' ' 
+	union "
+	select ctt.ctt_custo ctt_custo,ctt.ctt_desc01 ctt_desc01, ct2_itemc ctd_item, ctd_desc01 , ct2c.ct2_filial ct2_filial, ct2c.ct2_data ct2_data, ct2c.ct2_hist  ct2_hist, "
+	ct1.ct1_conta ct1_conta, ct1_desc01,  'c' tipo, ct2c.ct2_valor ct2_valor 
+    from CTT010 ctt 
+	inner join CT2010 ct2c on ctt.ctt_filial = ct2c.ct2_filial and (ct2_data between '20230601' and '20230630') and (ct2_credit between ' ' and 'ZZZ') and (ct2_itemc between ' ' and 'ZZZZZZZZ') and ctt_custo = ct2_ccc and ct2c.d_e_l_e_t_ = ' ' 
+	and ct2c.ct2_lote not in (008810)
+
+	inner join CT1010 ct1  on ctt.ctt_filial = ct1.ct1_filial  and ct1_conta = ct2_credit and ct1.d_e_l_E_t_ = ' ' 
+	inner join CTD010 ctd  on ctt.ctt_filial = ctd.ctd_filial  and ctd_item = ct2_itemc and ctd.d_e_l_E_t_ = ' ' 
+	where ctt_custo between ' ' and 'ZZZZ' 
+	and ctt.d_e_l_E_t_ = ' ' 
+	order by ctt_custo, ctd_item, ct2_filial, ct2_data, ct1_conta 
